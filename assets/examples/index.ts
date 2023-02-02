@@ -1,3 +1,3 @@
-import { App } from "../..";
+import Stric from "../..";
 
-await App.boot({ root: import.meta.dir });
+await Stric.boot({ root: import.meta.dir });

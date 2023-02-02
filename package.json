@@ -16,7 +16,7 @@
     "@stricjs/router": "^1.0.3",
     "@stricjs/utils": "^1.0.1"
   },
-  "description": "Add more features to StricJS",
+  "description": "StricJS kit",
   "scripts": {
     "build": "esbuild src/index.ts --bundle --format=esm --platform=node --minify --external:bun --outfile=index.js && tsc --declaration --outDir types --emitDeclarationOnly",
     "bench": "bun bench/index.ts"
