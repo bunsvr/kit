@@ -1,0 +1,7 @@
+{
+    "listen": {
+        "port": 8080
+    },
+    "dev": false,
+    "static": "public"
+}
