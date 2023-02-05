@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ],
+    "skipLibCheck": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "jsx": "react-jsx",
+    "module": "None",
+    "allowUmdGlobalAccess": true
+  },
+  "include": [
+    "pages/**/*.ts",
+    "pages/**/*.tsx",
+    "stric.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

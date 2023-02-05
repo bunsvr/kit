@@ -1,5 +1,5 @@
 import { existsSync, readFileSync } from "fs";
-import { Options } from "./types";
+import { Options, PageOptions } from "./types";
 import Bun from "bun";
 import pathUtils from "path/posix";
 import { importAll } from "./utils";
@@ -54,6 +54,7 @@ export default class Stric<T = any> {
         this.options.root ||= pathUtils.resolve(".");
         this.options.routes ||= "routes";
         this.options.listen ||= {};
+        this.options.pages ||= [];
         if (typeof this.options.dev === "undefined")
             this.options.dev = Bun.env.NODE_ENV !== "production";
 
@@ -67,9 +68,16 @@ export default class Stric<T = any> {
         // Create the app and the routers
         this.app = new App<T>();
         this.router = new Router<T>();
+
+        // Adding pages
         this.pages = new PageRouter<T>()
-            .set("src", "pages")
+            .set("src",
+                typeof this.options.pages[0] === "string"
+                    ? this.options.pages.shift() as string : "pages")
             .set("root", this.options.root);
+
+        for (const page of this.options.pages as PageOptions[]) 
+            this.pages[page.type || "static"](page.path as string, page.source);
 
         // Check for static serve
         const pubDir = this.options.static && pathUtils.join(
@@ -220,7 +228,7 @@ export default class Stric<T = any> {
      */
     static async boot(options?: string | Options) {
         /** @ts-ignore */
-        const app = await new Stric(options).page("/", "App.tsx").load(); 
+        const app = await new Stric(options).load();
 
         return app.boot();
     }

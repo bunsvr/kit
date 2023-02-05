@@ -22,9 +22,31 @@ export interface Options {
     listen?: ListenOptions;
 
     /**
+     * All pages
+     */
+    pages?: [string?, ...PageOptions[]];
+
+    /**
      * Development mode
      */
     dev?: boolean;
+}
+
+export interface PageOptions {
+    /**
+     * Path to handle
+     */
+    path: string | RegExp;
+
+    /**
+     * Relative path from page src
+     */
+    source: string;
+
+    /**
+     * Route type. Defaults to static
+     */
+    type?: "static" | "dynamic";
 }
 
 export interface ListenOptions {
