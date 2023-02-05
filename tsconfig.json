@@ -5,7 +5,10 @@
         "removeComments": false,
         "skipLibCheck": true,
         "module": "ESNext",
-        "moduleResolution": "node"
+        "moduleResolution": "node",
+        "declaration": true,
+        "emitDeclarationOnly": true,
+        "declarationDir": "types"
     },
     "include": ["src"]
 }
