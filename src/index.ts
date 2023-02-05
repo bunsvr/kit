@@ -7,8 +7,14 @@ import { Route } from "./route";
 import { Handler, Router } from "@stricjs/router";
 import { App, Middleware } from "@stricjs/core";
 import { stream } from "@stricjs/utils";
+import { PageRouter } from "@stricjs/jsx";
 
 export default class Stric<T = any> {
+    /**
+     * Page router
+     */
+    pages: PageRouter<T>;
+
     /**
      * The Stric app
      */
@@ -17,7 +23,7 @@ export default class Stric<T = any> {
     /**
      * The Stric router
      */
-    readonly router: Router<T>;
+    router: Router<T>;
 
     /**
      * All parsed options
@@ -58,9 +64,12 @@ export default class Stric<T = any> {
                 readFileSync(defaultOptFile).toString()
             ));
 
-        // Create the app and the router
+        // Create the app and the routers
         this.app = new App<T>();
         this.router = new Router<T>();
+        this.pages = new PageRouter<T>()
+            .set("src", "pages")
+            .set("root", this.options.root);
 
         // Check for static serve
         const pubDir = this.options.static && pathUtils.join(
@@ -83,7 +92,7 @@ export default class Stric<T = any> {
      * @param path The path
      * @param fn The handler
      */
-    static(path: string, fn: Handler<T>): Stric<T>;
+    static(path: string, fn: Handler<T>): this;
 
     /**
      * Register a handler for a static path of a specific method
@@ -91,7 +100,7 @@ export default class Stric<T = any> {
      * @param path The path
      * @param fn The handler
      */
-    static(method: string, path: string, fn: Handler<T>): Stric<T>;
+    static(method: string, path: string, fn: Handler<T>): this;
 
     static(...args: any[]) {
         /** @ts-ignore */
@@ -104,7 +113,7 @@ export default class Stric<T = any> {
      * @param path The path 
      * @param fn The handler
      */
-    dynamic(path: string | RegExp, fn: Handler<T>): Stric<T>;
+    dynamic(path: string | RegExp, fn: Handler<T>): this;
 
     /**
      * Register a handler for a dynamic path of a specific method
@@ -112,7 +121,7 @@ export default class Stric<T = any> {
      * @param path The path
      * @param fn The handler
      */
-    dynamic(method: string, path: string | RegExp, fn: Handler<T>): Stric<T>;
+    dynamic(method: string, path: string | RegExp, fn: Handler<T>): this;
 
     dynamic(...args: any[]) {
         /** @ts-ignore */
@@ -131,27 +140,77 @@ export default class Stric<T = any> {
     }
 
     /**
+     * Serve a static page
+     * @param type 
+     * @param path 
+     * @param source 
+     */
+    page(type: "static", path: string, source: string): this;
+
+    /**
+     * Serve a dynamic page
+     * @param type 
+     * @param path 
+     * @param source 
+     */
+    page(type: "dynamic", path: string | RegExp, source: string): this;
+
+    /**
+     * Serve a static page
+     * @param type 
+     * @param path 
+     * @param source 
+     */
+    page(path: string, source: string): this;
+    page(...args: ["static", string, string] | ["dynamic", string | RegExp, string] | [string, string]) {
+        if (args.length < 2)
+            throw new Error("Invalid arguments length");
+
+        if (args.length === 2)
+            return this.page("static", ...args);
+
+        /** @ts-ignore */
+        this.pages[args[0]](args[1], args[2]);
+        this.hasPage = true;
+
+        return this;
+    }
+
+    /**
      * Load all the routes
      */
     async load() {
         // Setup router
-        const routes = await importAll(
+        let routes = await importAll(
             pathUtils.join(this.options.root, this.options.routes)
         ) as Route[];
+
+        // Remove router if not needed
+        if (routes.length > 0)
+            this.hasRoute = true;
+
         for (const route of routes)
             route.bind(this.router);
 
+        // Setup page router
+        await this.pages.load();
+
         return this;
     }
+
+    private hasRoute: boolean;
+    private hasPage: boolean;
 
     /**
      * Start the app
      * @returns The server
      */
     boot() {
+        this.hasRoute && this.app.use(this.router.fetch());
+        this.hasPage && this.app.use(this.pages.fetch());
+
         // Register the router as a middleware
-        return Bun.serve(this.app.use(
-            this.router.fetch()));
+        return Bun.serve(this.app);
     }
 
     /**
@@ -161,7 +220,7 @@ export default class Stric<T = any> {
      */
     static async boot(options?: string | Options) {
         /** @ts-ignore */
-        const app = await new Stric(options).load();
+        const app = await new Stric(options).page("/", "App.tsx").load(); 
 
         return app.boot();
     }
