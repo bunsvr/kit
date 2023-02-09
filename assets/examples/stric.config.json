@@ -4,8 +4,13 @@
     },
     "dev": false,
     "static": "public",
-    "pages": [{
-        "path": "/",
-        "source": "App.tsx"
-    }]
+    "page": {
+        "list": [
+            {
+                "path": "/",
+                "source": "App.tsx",
+                "ssr": true
+            }
+        ]
+    }
 }

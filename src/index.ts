@@ -49,12 +49,12 @@ export default class Stric<T = any> {
         else if (options)
             this.options = options;
 
-        // Validate all options that are not set
+        // Set all options that are not set
         this.options ||= {};
         this.options.root ||= pathUtils.resolve(".");
         this.options.routes ||= "routes";
         this.options.listen ||= {};
-        this.options.pages ||= [];
+        this.options.page ||= {};
         if (typeof this.options.dev === "undefined")
             this.options.dev = Bun.env.NODE_ENV !== "production";
 
@@ -70,14 +70,16 @@ export default class Stric<T = any> {
         this.router = new Router<T>();
 
         // Adding pages
-        this.pages = new PageRouter<T>()
-            .set("src",
-                typeof this.options.pages[0] === "string"
-                    ? this.options.pages.shift() as string : "pages")
+        this.pages = new PageRouter<T>(this.options.page.build)
+            .set("src", this.options.page.src || "pages")
+            .set("dev", this.options.dev)
             .set("root", this.options.root);
 
-        for (const page of this.options.pages as PageOptions[]) 
-            this.pages[page.type || "static"](page.path as string, page.source);
+        if (this.options.page.list.length > 0) {
+            this.hasPage = true;
+            for (const page of this.options.page.list)
+                this.pages[page.type || "static"](page.path as string, page.source, page.ssr);
+        }
 
         // Check for static serve
         const pubDir = this.options.static && pathUtils.join(
@@ -153,7 +155,7 @@ export default class Stric<T = any> {
      * @param path 
      * @param source 
      */
-    page(type: "static", path: string, source: string): this;
+    page(type: "static", path: string, source: string, ssr?: boolean): this;
 
     /**
      * Serve a dynamic page
@@ -161,24 +163,10 @@ export default class Stric<T = any> {
      * @param path 
      * @param source 
      */
-    page(type: "dynamic", path: string | RegExp, source: string): this;
-
-    /**
-     * Serve a static page
-     * @param type 
-     * @param path 
-     * @param source 
-     */
-    page(path: string, source: string): this;
-    page(...args: ["static", string, string] | ["dynamic", string | RegExp, string] | [string, string]) {
-        if (args.length < 2)
-            throw new Error("Invalid arguments length");
-
-        if (args.length === 2)
-            return this.page("static", ...args);
-
+    page(type: "dynamic", path: string | RegExp, source: string, ssr?: boolean): this;
+    page(...args: ["static", string, string, boolean?] | ["dynamic", string | RegExp, string, boolean?]) {
         /** @ts-ignore */
-        this.pages[args[0]](args[1], args[2]);
+        this.pages[args[0]](args.slice(1));
         this.hasPage = true;
 
         return this;

@@ -1,3 +1,5 @@
+import { BuildOptions } from "esbuild";
+
 export interface Options {
     /**
      * The project root
@@ -24,7 +26,22 @@ export interface Options {
     /**
      * All pages
      */
-    pages?: [string?, ...PageOptions[]];
+    page?: {
+        /**
+         * Pages root
+         */
+        src?: string;
+
+        /**
+         * Page list
+         */
+        list?: PageOptions[];
+
+        /**
+         * All build options
+         */
+        build?: BuildOptions;
+    };
 
     /**
      * Development mode
@@ -47,6 +64,11 @@ export interface PageOptions {
      * Route type. Defaults to static
      */
     type?: "static" | "dynamic";
+
+    /**
+     * Enable server-side rendering
+     */
+    ssr?: boolean;
 }
 
 export interface ListenOptions {
