@@ -75,9 +75,9 @@ export default class Stric<T = any> {
             .set("dev", this.options.dev)
             .set("root", this.options.root);
 
-        if (this.options.page.list.length > 0) {
+        if (this.options.page.list?.length > 0) {
             this.hasPage = true;
-            for (const page of this.options.page.list)
+            for (const page of this.options.page.list || [])
                 this.pages[page.type || "static"](page.path as string, page.source, page.ssr);
         }
 
