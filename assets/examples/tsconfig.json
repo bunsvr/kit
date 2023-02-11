@@ -1,12 +1,12 @@
 {
     "references": [{
-        "path": "./conf/pages.json"
+        "path": "./conf/tsconfig.pages.json"
     }, {
-        "path": "./conf/routes.json"
+        "path": "./conf/tsconfig.routes.json"
     }],
-    "extends": "./conf/base.json",
+    "extends": "./conf/tsconfig.base.json",
     "compilerOptions": {
-        "module": "ESNext"
+        "module": "ESNext",
     },
     "include": ["./index.ts"]
 }

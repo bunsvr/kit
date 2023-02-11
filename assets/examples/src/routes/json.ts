@@ -22,5 +22,5 @@ export default new Route("static", "/json")
             return;
 
         // Return the object corresponds to the index
-        return Response.json(fields[index]);
+        return new Response(fields[index].name);
     });
