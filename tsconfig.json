@@ -8,7 +8,9 @@
         "moduleResolution": "node",
         "declaration": true,
         "emitDeclarationOnly": true,
-        "declarationDir": "types"
+        "declarationDir": "types",
+        "target": "ESNext"
     },
-    "include": ["src"]
+    "include": ["src"],
+    "exclude": ["assets"]
 }

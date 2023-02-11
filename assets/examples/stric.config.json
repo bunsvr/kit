@@ -8,8 +8,7 @@
         "list": [
             {
                 "path": "/",
-                "source": "App.tsx",
-                "ssr": true
+                "source": "App.tsx"
             }
         ]
     }
