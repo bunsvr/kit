@@ -1,0 +1,12 @@
+{
+    "references": [{
+        "path": "./conf/pages.json"
+    }, {
+        "path": "./conf/routes.json"
+    }],
+    "extends": "./conf/base.json",
+    "compilerOptions": {
+        "module": "ESNext"
+    },
+    "include": ["./index.ts"]
+}

@@ -1,0 +1,13 @@
+{
+  "extends": "./base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "module": "None",
+    "allowUmdGlobalAccess": true
+  },
+  "include": [
+    "../src/pages/**/*.ts",
+    "../src/pages/**/*.tsx",
+    "../stric.d.ts"
+  ]
+}

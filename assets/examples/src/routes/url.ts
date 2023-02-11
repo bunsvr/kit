@@ -1,4 +1,4 @@
-import { Route, URLParser } from "../../..";
+import { Route, URLParser } from "../../../..";
 
 const url = new URLParser();
 
