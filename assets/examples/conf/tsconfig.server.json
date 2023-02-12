@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "module": "ESNext",
+        "types": ["bun-types"],
+        "esModuleInterop": true,
+        "target": "ESNext",
+        "removeComments": false,
+        "skipDefaultLibCheck": true,
+        "moduleResolution": "node",
+        "composite": true,
+        "rootDir": ".."
+    },
+    "include": ["../src/routes", "../index.ts"]
+}

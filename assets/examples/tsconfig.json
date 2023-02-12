@@ -1,15 +1,10 @@
 {
-    "references": [{
-        "path": "tsconfig.jsx.json"
-    }],
-    "compilerOptions": {
-        "module": "ESNext",
-        "types": ["bun-types"],
-        "esModuleInterop": true,
-        "target": "ESNext",
-        "removeComments": false,
-        "skipDefaultLibCheck": true,
-        "moduleResolution": "node"
-    },
-    "include": ["src", "index.ts", "src/stric.d.ts"]
+    "references": [
+        {
+            "path": "./conf/tsconfig.client.json"
+        },
+        {
+            "path": "./conf/tsconfig.server.json"
+        }
+    ]
 }

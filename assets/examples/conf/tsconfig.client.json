@@ -11,10 +11,11 @@
     "esModuleInterop": true,
     "target": "ESNext",
     "moduleResolution": "node",
-    "composite": true
+    "composite": true,
+    "rootDir": ".."
   },
   "include": [
-    "src/pages/**/*.tsx",
-    "src/stric.d.ts"
+    "../src/pages/**/*.tsx",
+    "stric.d.ts"
   ]
 }
