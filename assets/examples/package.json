@@ -1,7 +1,10 @@
 {
-    "name": "example",
-    "version": "1.0.0",
-    "dependencies": {
-        "@stricjs/kit": "file:../.."
-    }
+  "name": "example",
+  "version": "1.0.0",
+  "dependencies": {
+    "@stricjs/kit": "^1.0.1"
+  },
+  "devDependencies": {
+    "bun-types": "^0.5.6"
+  }
 }

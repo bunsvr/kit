@@ -1,4 +1,4 @@
-import { Route, URLParser } from "../../../..";
+import { Route, URLParser } from "@stricjs/kit";
 
 const fields = [{
     name: "Reve",
@@ -22,5 +22,5 @@ export default new Route("static", "/json")
             return;
 
         // Return the object corresponds to the index
-        return new Response(fields[index].name);
+        return Response.json(fields[index]);
     });

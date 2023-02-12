@@ -1,12 +1,15 @@
 {
     "references": [{
-        "path": "./conf/tsconfig.pages.json"
-    }, {
-        "path": "./conf/tsconfig.routes.json"
+        "path": "tsconfig.jsx.json"
     }],
-    "extends": "./conf/tsconfig.base.json",
     "compilerOptions": {
         "module": "ESNext",
+        "types": ["bun-types"],
+        "esModuleInterop": true,
+        "target": "ESNext",
+        "removeComments": false,
+        "skipDefaultLibCheck": true,
+        "moduleResolution": "node"
     },
-    "include": ["./index.ts"]
+    "include": ["src", "index.ts", "src/stric.d.ts"]
 }
