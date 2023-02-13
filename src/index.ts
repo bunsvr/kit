@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from "fs";
-import { Options, PageOptions } from "./types";
-import Bun from "bun";
+import { Options } from "./types";
+import { Server } from "bun";
 import pathUtils from "path/posix";
 import { importAll } from "./utils";
 import { Route } from "./route";
@@ -201,7 +201,7 @@ export default class Stric<T = any> {
      * Start the app
      * @returns The server
      */
-    boot() {
+    boot(): Server {
         this.hasRoute && this.app.use(this.router.fetch());
         this.hasPage && this.app.use(this.pages.fetch());
 
@@ -224,6 +224,7 @@ export default class Stric<T = any> {
 
 export { Route };
 export * from "@stricjs/core";
+export * from "@stricjs/jsx";
 export * from "@stricjs/router";
 export * from "@stricjs/utils";
 export * from "./parser";

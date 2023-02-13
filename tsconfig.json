@@ -5,12 +5,16 @@
         "removeComments": false,
         "skipLibCheck": true,
         "module": "ESNext",
+        "lib": [
+            "DOM",
+            "DOM.Iterable",
+            "ESNext"
+        ],
         "moduleResolution": "node",
         "declaration": true,
         "emitDeclarationOnly": true,
         "declarationDir": "types",
         "target": "ESNext"
     },
-    "include": ["src"],
-    "exclude": ["assets"]
+    "include": ["src"]
 }
