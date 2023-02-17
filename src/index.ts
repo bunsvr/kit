@@ -227,5 +227,4 @@ export * from "@stricjs/core";
 export * from "@stricjs/jsx";
 export * from "@stricjs/router";
 export * from "@stricjs/utils";
-export * from "./parser";
 export * from "./types";

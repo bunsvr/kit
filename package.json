@@ -1,6 +1,6 @@
 {
   "name": "@stricjs/kit",
-  "version": "1.0.2-alpha.1",
+  "version": "1.0.2",
   "repository": {
     "url": "https://github.com/bunsvr/kit"
   },
@@ -18,7 +18,7 @@
     "@stricjs/core": "^1.0.3",
     "@stricjs/jsx": "^1.0.3",
     "@stricjs/router": "^1.0.4",
-    "@stricjs/utils": "^1.0.1",
+    "@stricjs/utils": "^1.0.3",
     "esbuild": "^0.16.10"
   },
   "description": "StricJS kit",
