@@ -7,13 +7,14 @@ import { Route } from "./route";
 import { Handler, Router } from "@stricjs/router";
 import { App, Middleware } from "@stricjs/core";
 import { stream } from "@stricjs/utils";
-import { PageRouter } from "@stricjs/jsx";
+import { PageRouter } from "@stricjs/pages";
+import { PageRouter as ReactRouter } from "@stricjs/jsx";
 
-export default class Stric<T = any> {
+export default class Stric<T = any, Page extends PageRouter<T> = ReactRouter<T>> {
     /**
      * Page router
      */
-    pages: PageRouter<T>;
+    pages: Page;
 
     /**
      * The Stric app
@@ -31,21 +32,30 @@ export default class Stric<T = any> {
     readonly options: Options;
 
     /**
+     * Initialize a router
+     * @param page a page router
+     */
+    constructor(page?: Page);
+
+    /**
      * Initialize an app
      * @param options a path to a config file
+     * @param page a page router
      */
-    constructor(options?: string);
+    constructor(options: string, page?: Page);
 
     /**
      * Initialize an app
      * @param options a config object
      */
-    constructor(options?: Options);
+    constructor(options: Options, page?: Page);
 
-    constructor(options?: string | Options) {
+    constructor(options?: string | Options | Page, page?: Page) {
         // If option is a path
         if (typeof options === "string")
             this.options = JSON.parse(readFileSync(options).toString());
+        else if (options instanceof PageRouter<T>)
+            page = options;
         else if (options)
             this.options = options;
 
@@ -70,15 +80,17 @@ export default class Stric<T = any> {
         this.router = new Router<T>();
 
         // Adding pages
-        this.pages = new PageRouter<T>(this.options.page.build)
-            .set("src", this.options.page.src || "pages")
-            .set("dev", this.options.dev)
-            .set("root", this.options.root);
+        if (page instanceof PageRouter<T>) {
+            this.pages = page
+                .set("src", this.options.page.src || "pages")
+                .set("dev", this.options.dev)
+                .set("root", this.options.root);
 
-        if (this.options.page.list?.length > 0) {
-            this.hasPage = true;
-            for (const page of this.options.page.list || [])
-                this.pages[page.type || "static"](page.path as string, page.source, page.ssr);
+            if (this.options.page.list?.length > 0) {
+                this.hasPage = true;
+                for (const page of this.options.page.list || [])
+                    this.pages[page.type || "static"](page.path as string, page.source, page.ssr);
+            }
         }
 
         // Check for static serve
@@ -165,6 +177,9 @@ export default class Stric<T = any> {
      */
     page(type: "dynamic", path: string | RegExp, source: string, ssr?: boolean): this;
     page(...args: ["static", string, string, boolean?] | ["dynamic", string | RegExp, string, boolean?]) {
+        if (!this.pages)
+            throw new Error("Need a page router");
+
         /** @ts-ignore */
         this.pages[args[0]](args.slice(1));
         this.hasPage = true;
@@ -189,7 +204,7 @@ export default class Stric<T = any> {
             route.bind(this.router);
 
         // Setup page router
-        await this.pages.load();
+        await this.pages?.load();
 
         return this;
     }
@@ -224,7 +239,6 @@ export default class Stric<T = any> {
 
 export { Route };
 export * from "@stricjs/core";
-export * from "@stricjs/jsx";
 export * from "@stricjs/router";
 export * from "@stricjs/utils";
 export * from "./types";
