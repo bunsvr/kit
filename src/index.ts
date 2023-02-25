@@ -54,7 +54,7 @@ export default class Stric<T = any, Page extends PageRouter<T> = ReactRouter<T>>
         // If option is a path
         if (typeof options === "string")
             this.options = JSON.parse(readFileSync(options).toString());
-        else if (options instanceof PageRouter<T>)
+        else if (options instanceof PageRouter)
             page = options;
         else if (options)
             this.options = options;
