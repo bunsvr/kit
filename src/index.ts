@@ -61,7 +61,7 @@ export default class Stric<T = any, Page extends PageRouter<T> = ReactRouter<T>>
 
         // Set all options that are not set
         this.options ||= {};
-        this.options.root ||= pathUtils.resolve(".");
+        this.options.root ||= pathUtils.join(pathUtils.dirname(Bun.main), "src");
         this.options.routes ||= "routes";
         this.options.listen ||= {};
         this.options.page ||= {};
@@ -87,7 +87,7 @@ export default class Stric<T = any, Page extends PageRouter<T> = ReactRouter<T>>
         this.pages = page
             .set("src", this.options.page.src || "pages")
             .set("dev", this.options.dev)
-            .set("root", this.options.root || pathUtils.join(pathUtils.dirname(Bun.main), "src"));
+            .set("root", this.options.root);
 
         if (this.options.page.list?.length > 0) {
             this.hasPage = true;
