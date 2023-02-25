@@ -9,22 +9,18 @@
     "bun-types": "^0.5.6",
     "typescript": "^4.9.4",
     "path-to-regexp": "^6.2.1",
-    "@types/react": "^15.7.12",
-    "@types/react-dom": "^18.0.10",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "@stricjs/pages": "~1.0.2"
+    "@stricjs/pages": "~1.0.2",
+    "@stricjs/jsx": "~1.0.7"
   },
   "dependencies": {
     "@stricjs/core": "~1.0.3",
     "@stricjs/router": "~1.0.6",
     "@stricjs/utils": "~1.0.4",
-    "@stricjs/jsx": "~1.0.6",
     "esbuild": "^0.16.10"
   },
   "description": "StricJS kit",
   "scripts": {
-    "build": "esbuild src/index.ts --bundle --minify --format=esm --platform=node --external:bun --external:esbuild --external:@stricjs/core --external:@stricjs/router --external:@stricjs/utils --external:@stricjs/jsx --outfile=index.js && tsc",
+    "build": "esbuild src/index.ts --bundle --minify --format=esm --platform=node --external:bun --external:esbuild --external:@stricjs/core --external:@stricjs/router --external:@stricjs/utils --outfile=index.js && tsc",
     "bench": "bun bench/index.ts"
   },
   "type": "module",
