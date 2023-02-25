@@ -80,17 +80,19 @@ export default class Stric<T = any, Page extends PageRouter<T> = ReactRouter<T>>
         this.router = new Router<T>();
 
         // Adding pages
-        if (page) {
-            this.pages = page
-                .set("src", this.options.page.src || "pages")
-                .set("dev", this.options.dev)
-                .set("root", this.options.root || pathUtils.dirname(Bun.main));
+        if (!page)
+            // @ts-ignore
+            page = new ReactRouter<T>;
 
-            if (this.options.page.list?.length > 0) {
-                this.hasPage = true;
-                for (const page of this.options.page.list || [])
-                    this.pages[page.type || "static"](page.path as string, page.source, page.ssr);
-            }
+        this.pages = page
+            .set("src", this.options.page.src || "pages")
+            .set("dev", this.options.dev)
+            .set("root", this.options.root || pathUtils.join(pathUtils.dirname(Bun.main), "src"));
+
+        if (this.options.page.list?.length > 0) {
+            this.hasPage = true;
+            for (const page of this.options.page.list || [])
+                this.pages[page.type || "static"](page.path as string, page.source, page.ssr);
         }
 
         // Check for static serve
