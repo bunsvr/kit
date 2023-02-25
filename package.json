@@ -1,6 +1,6 @@
 {
   "name": "@stricjs/kit",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "repository": {
     "url": "https://github.com/bunsvr/kit"
   },
@@ -13,13 +13,13 @@
     "@types/react-dom": "^18.0.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "@stricjs/pages": "~1.0.0",
-    "@stricjs/jsx": "~1.0.0"
+    "@stricjs/pages": "~1.0.2"
   },
   "dependencies": {
-    "@stricjs/core": "~1.0.0",
-    "@stricjs/router": "~1.0.0",
-    "@stricjs/utils": "~1.0.0",
+    "@stricjs/core": "~1.0.3",
+    "@stricjs/router": "~1.0.6",
+    "@stricjs/utils": "~1.0.4",
+    "@stricjs/jsx": "~1.0.6",
     "esbuild": "^0.16.10"
   },
   "description": "StricJS kit",
@@ -29,8 +29,5 @@
   },
   "type": "module",
   "types": "types/index.d.ts",
-  "typedoc": {
-    "entryPoint": "./src/index.ts",
-    "displayName": "@stricjs/kit"
-  }
+  "keywords": ["bun", "stric"]
 }
