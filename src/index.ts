@@ -84,7 +84,7 @@ export default class Stric<T = any, Page extends PageRouter<T> = ReactRouter<T>>
             this.pages = page
                 .set("src", this.options.page.src || "pages")
                 .set("dev", this.options.dev)
-                .set("root", this.options.root);
+                .set("root", this.options.root || pathUtils.dirname(Bun.main));
 
             if (this.options.page.list?.length > 0) {
                 this.hasPage = true;
@@ -224,14 +224,18 @@ export default class Stric<T = any, Page extends PageRouter<T> = ReactRouter<T>>
         return Bun.serve(this.app);
     }
 
+    static boot(options?: string | Options): Promise<Server>;
+    static boot<Page extends PageRouter>(page: Page): Promise<Server>;
+    static boot<Page extends PageRouter>(options: string | Options, page: Page): Promise<Server>;
+
     /**
      * Create and start an app
      * @param options a config object or a path to the config file
      * @returns The server
      */
-    static async boot(options?: string | Options) {
+    static async boot<Page extends PageRouter>(options?: string | Options | Page, page?: Page) {
         /** @ts-ignore */
-        const app = await new Stric(options).load();
+        const app = await new Stric(options, page).load();
 
         return app.boot();
     }
