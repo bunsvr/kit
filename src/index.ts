@@ -80,7 +80,7 @@ export default class Stric<T = any, Page extends PageRouter<T> = ReactRouter<T>>
         this.router = new Router<T>();
 
         // Adding pages
-        if (page instanceof PageRouter<T>) {
+        if (page) {
             this.pages = page
                 .set("src", this.options.page.src || "pages")
                 .set("dev", this.options.dev)
