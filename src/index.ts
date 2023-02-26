@@ -8,9 +8,8 @@ import { Handler, Router } from "@stricjs/router";
 import { App, Middleware } from "@stricjs/core";
 import { stream } from "@stricjs/utils";
 import { PageRouter } from "@stricjs/pages";
-import { PageRouter as ReactRouter } from "@stricjs/jsx";
 
-export default class Stric<T = any, Page extends PageRouter<T> = ReactRouter<T>> {
+export default class Stric<T = any, Page extends PageRouter<T> = PageRouter<T>> {
     /**
      * Page router
      */
@@ -80,19 +79,17 @@ export default class Stric<T = any, Page extends PageRouter<T> = ReactRouter<T>>
         this.router = new Router<T>();
 
         // Adding pages
-        if (!page)
-            // @ts-ignore
-            page = new ReactRouter<T>;
+        if (page) {
+            this.pages = page
+                .set("src", this.options.page.src || "pages")
+                .set("dev", this.options.dev)
+                .set("root", this.options.root);
 
-        this.pages = page
-            .set("src", this.options.page.src || "pages")
-            .set("dev", this.options.dev)
-            .set("root", this.options.root);
-
-        if (this.options.page.list?.length > 0) {
-            this.hasPage = true;
-            for (const page of this.options.page.list || [])
-                this.pages[page.type || "static"](page.path as string, page.source, page.ssr);
+            if (this.options.page.list?.length > 0) {
+                this.hasPage = true;
+                for (const page of this.options.page.list || [])
+                    this.pages[page.type || "static"](page.path as string, page.source, page.ssr);
+            }
         }
 
         // Check for static serve
